@@ -1,5 +1,7 @@
 import appConfig from "./app-config";
-import { ChatInterface, ChatModule, ChatRestModule, ChatWorkerClient, ModelRecord } from "@mlc-ai/web-llm";
+import { ChatInterface, ChatModule, ChatRestModule, ChatWorkerClient, ModelRecord, LogitProcessor } from "@mlc-ai/web-llm";
+import { MusicLogitProcessor } from "./music_logit_processor";
+import { chunkGenerator } from "./music_transformer_generate";
 
 function getElementAndCheck(id: string): HTMLElement {
   const element = document.getElementById(id);
@@ -275,6 +277,10 @@ class ChatUI {
         const output = await this.localChat.generate(prompt, callbackUpdateResponse);
         this.updateLastMessage("left", output);
         this.uiChatInfoLabel.innerHTML = await this.localChat.runtimeStatsText();
+      } else if (this.selectedModel.includes("music-")) {
+        await this.chat.generate(prompt, callbackUpdateResponse);
+        this.updateLastMessage("left", "Please check your console log for generated tokens");
+        this.uiChatInfoLabel.innerHTML = await this.chat.runtimeStatsText();
       } else {
         const output = await this.chat.generate(prompt, callbackUpdateResponse);
         this.updateLastMessage("left", output);
@@ -301,7 +307,10 @@ if (useWebWorker) {
   ));
   localChat = new ChatRestModule();
 } else {
-  chat = new ChatModule();
+  const musicLogitProcessor = new MusicLogitProcessor();
+  const logitProcessorRegistry = new Map<string, LogitProcessor>();
+  logitProcessorRegistry.set("music-medium-800k-q0f32", musicLogitProcessor);
+  chat = new ChatModule(logitProcessorRegistry);
   localChat = new ChatRestModule();
 }
 ChatUI.CreateAsync(chat, localChat);

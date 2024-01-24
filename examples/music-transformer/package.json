@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "start": "parcel src/music_transformer.html  --port 8885",
+        "start": "parcel src/music_transformer.html  --port 8887",
         "build": "parcel build src/music_transformer.html --dist-dir lib"
     },
     "devDependencies": {

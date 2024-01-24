@@ -181,6 +181,13 @@ export default {
 			"vram_required_MB": 2740.48,
 			"low_resource_required": true,
 		},
+		// Music-Transformer
+		{
+			"model_url": "https://huggingface.co/mlc-ai/mlc-chat-stanford-crfm-music-medium-800k-q0f32/resolve/main/",
+        	"local_id": "music-medium-800k-q0f32",
+        	"model_lib_url": "https://raw.githubusercontent.com/mlc-ai/binary-mlc-llm-libs/main/music-medium-800k-q0f32.wasm",
+			"low_resource_required": false
+		},
 		// TinyLlama
 		{
 			"model_url": "https://huggingface.co/mlc-ai/TinyLlama-1.1B-Chat-v0.4-q0f16-MLC/resolve/main/",
